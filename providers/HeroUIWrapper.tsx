@@ -22,7 +22,7 @@ const HeroUIWrapper = ({
           <main>{children}</main>
         </NextThemesProvider>
       ) : (
-        <main className="dark text-foreground bg-background">{children}</main>
+        <main className="light text-foreground bg-background">{children}</main>
       )}
     </HeroUIProvider>
   );

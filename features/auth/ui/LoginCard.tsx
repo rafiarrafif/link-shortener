@@ -11,7 +11,7 @@ const LoginCard = () => {
       shadow="none"
       classNames={{ base: "outline-1 outline-neutral-400" }}
     >
-      <CardHeader className="mt-2 justify-center">
+      <CardHeader className="mt-3 justify-center">
         <h1 className="text-2xl font-medium text-center">Welcome Back</h1>
       </CardHeader>
       <CardBody className="px-4">
@@ -20,7 +20,9 @@ const LoginCard = () => {
       <CardFooter className="flex justify-center -mt-1 mb-3">
         <span className="text-sm">
           Don't have an account?&nbsp;
-          <Link className="text-sm cursor-pointer font-medium">Sign up</Link>
+          <Link className="text-sm cursor-pointer font-medium" href="/signup">
+            Sign up
+          </Link>
         </span>
       </CardFooter>
     </Card>
