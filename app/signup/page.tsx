@@ -1,4 +1,4 @@
-import SignupCard from "@/features/auth/ui/SignupCard";
+import SignupFormWrapper from "@/features/auth/ui/SignupFormWrapper";
 import React from "react";
 
 const page = () => {
@@ -6,7 +6,7 @@ const page = () => {
     <>
       <div className="w-full min-h-screen flex justify-center items-center">
         <div className="-mt-[20vh]">
-          <SignupCard />
+          <SignupFormWrapper />
         </div>
       </div>
     </>
