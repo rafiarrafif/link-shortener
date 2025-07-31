@@ -5,6 +5,7 @@ import { signupSchema } from "./validators";
 import bcrypt from "bcrypt";
 import { PreviewData } from "next";
 import { treeifyError } from "zod";
+import { ZodTreeifyError } from "@/shared/types/zod/TreeifyError.types";
 
 export const registerUser = async (
   prevData: PreviewData,
@@ -16,20 +17,39 @@ export const registerUser = async (
     password: formData.get("password") as string,
   };
 
-  const validate = signupSchema.safeParse(payload);
-  if (!validate.success) {
-    return treeifyError(validate.error);
+  const validationResult = signupSchema.safeParse(payload);
+
+  if (!validationResult.success) {
+    const parsedErros: ZodTreeifyError = treeifyError(validationResult.error);
+    let formattedErrors: { [fieldName: string]: string[] } = {};
+
+    for (const fieldName in parsedErros.properties) {
+      const fieldErrors = parsedErros.properties[fieldName].errors;
+      if (fieldErrors.length > 0) {
+        formattedErrors[fieldName] = fieldErrors;
+      }
+    }
+
+    return formattedErrors;
   }
 
-  const hashedPassword = await bcrypt.hash(validate.data?.password!, 10);
-  await createUser({
-    name: validate.data?.name!,
-    email: validate.data?.email!,
-    password: hashedPassword,
-  });
+  const hashedPassword = await bcrypt.hash(
+    validationResult.data?.password!,
+    10
+  );
 
-  return {
-    success: true,
-    message: "User created successfully",
-  };
+  try {
+    await createUser({
+      name: validationResult.data?.name!,
+      email: validationResult.data?.email!,
+      password: hashedPassword,
+    });
+
+    return {
+      success: true,
+      message: "User created successfully",
+    };
+  } catch (error) {
+    return error;
+  }
 };

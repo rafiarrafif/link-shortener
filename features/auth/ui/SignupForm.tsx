@@ -34,14 +34,14 @@ const SignupForm = () => {
         <h1 className="text-2xl font-medium text-center">Create an account</h1>
       </CardHeader>
       <CardBody className="px-4">
-        <Form className="flex flex-col gap-2" action={formAction}>
+        <Form
+          className="flex flex-col gap-2"
+          action={formAction}
+          validationErrors={formState}
+        >
           <Input
             required
             minLength={4}
-            isInvalid={!!formState.properties?.name}
-            errorMessage={
-              formState.properties && formState.properties.name.errors[0]
-            }
             label="Full Name"
             name="name"
             variant="bordered"
@@ -53,10 +53,6 @@ const SignupForm = () => {
           />
           <Input
             required
-            isInvalid={!!formState.properties?.email}
-            errorMessage={
-              formState.properties && formState.properties.email.errors[0]
-            }
             label="Email"
             name="email"
             type="email"
@@ -69,10 +65,6 @@ const SignupForm = () => {
           />
           <Input
             required
-            isInvalid={!!formState.properties?.password}
-            errorMessage={
-              formState.properties && formState.properties.password.errors[0]
-            }
             minLength={8}
             label="Password"
             name="password"
