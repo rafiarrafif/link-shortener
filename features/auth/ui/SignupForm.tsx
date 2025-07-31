@@ -11,32 +11,22 @@ import {
   Link,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import React, { useRef, useState } from "react";
+import React, { useActionState, useRef, useState } from "react";
+import { registerUser } from "../model/actions";
 
-type SignupFormProps = {
-  action: (formData: FormData) => void;
-};
-
-const SignupForm = ({ action }: SignupFormProps) => {
+const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [errors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-    await action(formData);
-
-    formRef.current?.reset();
-    setIsSubmitting(false);
-  };
+  const initialFormState: any = {};
+  const [formState, formAction] = useActionState(
+    registerUser,
+    initialFormState
+  );
 
   return (
     <Card
-      className="w-[24vw]"
+      className="w-[380px]"
       shadow="none"
       classNames={{ base: "outline-1 outline-neutral-400" }}
     >
@@ -44,15 +34,14 @@ const SignupForm = ({ action }: SignupFormProps) => {
         <h1 className="text-2xl font-medium text-center">Create an account</h1>
       </CardHeader>
       <CardBody className="px-4">
-        <Form
-          ref={formRef}
-          className="flex flex-col gap-2"
-          validationErrors={errors}
-          onSubmit={handleSubmit}
-        >
+        <Form className="flex flex-col gap-2" action={formAction}>
           <Input
             required
             minLength={4}
+            isInvalid={!!formState.properties?.name}
+            errorMessage={
+              formState.properties && formState.properties.name.errors[0]
+            }
             label="Full Name"
             name="name"
             variant="bordered"
@@ -64,6 +53,10 @@ const SignupForm = ({ action }: SignupFormProps) => {
           />
           <Input
             required
+            isInvalid={!!formState.properties?.email}
+            errorMessage={
+              formState.properties && formState.properties.email.errors[0]
+            }
             label="Email"
             name="email"
             type="email"
@@ -76,6 +69,10 @@ const SignupForm = ({ action }: SignupFormProps) => {
           />
           <Input
             required
+            isInvalid={!!formState.properties?.password}
+            errorMessage={
+              formState.properties && formState.properties.password.errors[0]
+            }
             minLength={8}
             label="Password"
             name="password"
