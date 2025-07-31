@@ -11,7 +11,8 @@ import {
   Link,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { signupSchema } from "../model/validators";
 
 type SignupFormProps = {
   action: (formData: FormData) => void;
@@ -19,10 +20,11 @@ type SignupFormProps = {
 
 const SignupForm = ({ action }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
   return (
     <Card
-      className="min-w-[24vw]"
+      className="w-[24vw]"
       shadow="none"
       classNames={{ base: "outline-1 outline-neutral-400" }}
     >
@@ -30,26 +32,38 @@ const SignupForm = ({ action }: SignupFormProps) => {
         <h1 className="text-2xl font-medium text-center">Create an account</h1>
       </CardHeader>
       <CardBody className="px-4">
-        <Form className="flex flex-col gap-2" action={action}>
+        <Form
+          className="flex flex-col gap-2"
+          validationErrors={errors}
+          action={action}
+        >
           <Input
+            required
+            minLength={4}
             label="Full Name"
             name="name"
             variant="bordered"
             classNames={{
               input: "focus:outline-none text-md",
               label: "mb-1",
+              errorMessage: "-mb-1.5",
             }}
           />
           <Input
+            required
             label="Email"
             name="email"
+            type="email"
             variant="bordered"
             classNames={{
               input: "focus:outline-none text-md",
               label: "mb-1",
+              errorMessage: "-mb-1.5",
             }}
           />
           <Input
+            required
+            minLength={8}
             label="Password"
             name="password"
             type={showPassword ? "text" : "password"}
@@ -57,6 +71,7 @@ const SignupForm = ({ action }: SignupFormProps) => {
             classNames={{
               input: "focus:outline-none text-md",
               label: "mb-1",
+              errorMessage: "-mb-1.5",
             }}
             endContent={
               <Button

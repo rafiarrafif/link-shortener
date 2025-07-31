@@ -7,6 +7,7 @@ const SignupFormWrapper = () => {
     "use server";
     await registerUser(formData);
   };
+
   return <SignupForm action={action} />;
 };
 
