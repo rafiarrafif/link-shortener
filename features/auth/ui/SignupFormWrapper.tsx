@@ -1,4 +1,3 @@
-import React from "react";
 import { registerUser } from "../model/actions";
 import SignupForm from "./SignupForm";
 

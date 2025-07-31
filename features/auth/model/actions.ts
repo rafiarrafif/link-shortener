@@ -16,7 +16,7 @@ export const registerUser = async (formData: FormData) => {
 
   const hashedPassword = await bcrypt.hash(validate.data?.password!, 10);
   return createUser({
-    name: validate.data?.email!,
+    name: validate.data?.name!,
     email: validate.data?.email!,
     password: hashedPassword,
   });

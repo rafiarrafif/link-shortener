@@ -11,8 +11,7 @@ import {
   Link,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import React, { useMemo, useState } from "react";
-import { signupSchema } from "../model/validators";
+import React, { useRef, useState } from "react";
 
 type SignupFormProps = {
   action: (formData: FormData) => void;
@@ -20,7 +19,20 @@ type SignupFormProps = {
 
 const SignupForm = ({ action }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    await action(formData);
+
+    formRef.current?.reset();
+    setIsSubmitting(false);
+  };
 
   return (
     <Card
@@ -33,9 +45,10 @@ const SignupForm = ({ action }: SignupFormProps) => {
       </CardHeader>
       <CardBody className="px-4">
         <Form
+          ref={formRef}
           className="flex flex-col gap-2"
           validationErrors={errors}
-          action={action}
+          onSubmit={handleSubmit}
         >
           <Input
             required
@@ -90,7 +103,12 @@ const SignupForm = ({ action }: SignupFormProps) => {
               </Button>
             }
           />
-          <Button type="submit" color="primary" className="mt-3 w-full">
+          <Button
+            type="submit"
+            color="primary"
+            className="mt-3 w-full"
+            isLoading={isSubmitting}
+          >
             Continue
           </Button>
         </Form>
