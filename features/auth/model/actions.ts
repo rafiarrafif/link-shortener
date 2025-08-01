@@ -30,7 +30,10 @@ export const registerUser = async (
       }
     }
 
-    return formattedErrors;
+    return {
+      error: true,
+      ...formattedErrors,
+    };
   }
 
   const hashedPassword = await bcrypt.hash(
@@ -51,6 +54,7 @@ export const registerUser = async (
     };
   } else {
     return {
+      error: true,
       email: ["Email already registered"],
     };
   }

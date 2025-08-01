@@ -41,7 +41,7 @@ const SignupForm = () => {
         timeout: 5000,
       });
       router.push("/login");
-    } else {
+    } else if (callbackState.error === true) {
       addToast({
         title: "Oops! There was a mistake",
         description: "Double-check your details and try again.",

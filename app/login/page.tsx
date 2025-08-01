@@ -1,4 +1,4 @@
-import LoginCard from "@/features/auth/ui/LoginCard";
+import LoginForm from "@/features/auth/ui/LoginForm";
 import React from "react";
 
 const page = () => {
@@ -6,7 +6,7 @@ const page = () => {
     <>
       <div className="w-full min-h-screen flex justify-center items-center">
         <div className="-mt-[20vh]">
-          <LoginCard />
+          <LoginForm />
         </div>
       </div>
     </>
