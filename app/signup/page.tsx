@@ -1,4 +1,4 @@
-import SignupForm from "@/features/auth/ui/SignupForm";
+import SignupForm from "@/features/registration/ui/SignupForm";
 import React from "react";
 
 const page = () => {
