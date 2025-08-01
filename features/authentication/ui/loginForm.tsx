@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  addToast,
   Button,
   Card,
   CardBody,
@@ -11,10 +12,42 @@ import {
   Link,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import { ValidationError } from "next/dist/compiled/amphtml-validator";
+import React, { useActionState, useEffect, useState } from "react";
+import { authLogin } from "../model/actions";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const showPasswordIcon = showPassword
+    ? "heroicons:eye-slash-20-solid"
+    : "heroicons:eye-20-solid";
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const initialFormState: ValidationError = {};
+  const [callbackState, formAction] = useActionState(
+    authLogin,
+    initialFormState
+  );
+
+  useEffect(() => {
+    if (callbackState.success) {
+      addToast({
+        title: callbackState.message.title,
+        description: callbackState.message.description,
+        color: "success",
+        timeout: 5000,
+      });
+    } else if (callbackState.success === false) {
+      addToast({
+        title: callbackState.message.title,
+        description: callbackState.message.description,
+        color: "danger",
+        timeout: 7000,
+      });
+      setIsSubmitting(false);
+    }
+  }, [callbackState]);
 
   return (
     <Card
@@ -26,9 +59,16 @@ const LoginForm = () => {
         <h1 className="text-2xl font-medium text-center">Welcome Back</h1>
       </CardHeader>
       <CardBody className="px-4">
-        <Form className="flex flex-col gap-2">
+        <Form
+          className="flex flex-col gap-2"
+          validationErrors={callbackState}
+          action={formAction}
+          onSubmit={() => setIsSubmitting(true)}
+        >
           <Input
             label="Email"
+            name="email"
+            // type="email"
             variant="bordered"
             classNames={{
               input: "focus:outline-none text-md",
@@ -37,6 +77,7 @@ const LoginForm = () => {
           />
           <Input
             label="Password"
+            name="password"
             type={showPassword ? "text" : "password"}
             variant="bordered"
             classNames={{
@@ -50,17 +91,18 @@ const LoginForm = () => {
                 onPress={() => setShowPassword(!showPassword)}
               >
                 <Icon
-                  icon={
-                    showPassword
-                      ? "heroicons:eye-slash-20-solid"
-                      : "heroicons:eye-20-solid"
-                  }
+                  icon={showPasswordIcon}
                   className="w-5 h-5 text-[#a0a0a0] group-hover/wrapper:text-[#777777]"
                 />
               </Button>
             }
           />
-          <Button color="primary" className="mt-3 w-full">
+          <Button
+            type="submit"
+            color="primary"
+            className="mt-3 w-full"
+            isLoading={isSubmitting}
+          >
             Continue
           </Button>
         </Form>

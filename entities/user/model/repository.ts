@@ -18,3 +18,30 @@ export const createUser = async (data: {
     };
   }
 };
+
+export const findUserByEmail = async (email: string) => {
+  try {
+    const userData = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!userData) {
+      return {
+        success: false,
+        error_type: "user",
+      };
+    } else {
+      return {
+        success: true,
+        data: userData,
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error_type: "user",
+    };
+  }
+};
