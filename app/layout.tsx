@@ -5,7 +5,7 @@ import React from "react";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <body>
         <GeistFontProvider>
           <HeroUIWrapper>{children}</HeroUIWrapper>
