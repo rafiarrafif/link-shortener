@@ -1,5 +1,5 @@
 export type ZodTreeifyError = {
-  properties: {
+  properties?: {
     [fieldsName: string]: {
       errors: string[];
     };

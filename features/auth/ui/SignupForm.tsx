@@ -1,6 +1,12 @@
 "use client";
 
+import { Icon } from "@iconify/react";
+import { registerUser } from "../model/actions";
+import { useRouter } from "next/navigation";
+import { ValidationError } from "next/dist/compiled/amphtml-validator";
+import React, { useActionState, useEffect, useState } from "react";
 import {
+  addToast,
   Button,
   Card,
   CardBody,
@@ -10,19 +16,41 @@ import {
   Input,
   Link,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
-import React, { useActionState, useRef, useState } from "react";
-import { registerUser } from "../model/actions";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const showPasswordIcon = showPassword
+    ? "heroicons:eye-slash-20-solid"
+    : "heroicons:eye-20-solid";
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const initialFormState: any = {};
-  const [formState, formAction] = useActionState(
+  const initialFormState: ValidationError = {};
+  const [callbackState, formAction] = useActionState(
     registerUser,
     initialFormState
   );
+
+  const router = useRouter();
+  useEffect(() => {
+    if (callbackState.success === true) {
+      addToast({
+        title: "You're all set!",
+        description: "Log in now to start exploring.",
+        color: "success",
+        timeout: 5000,
+      });
+      router.push("/login");
+    } else {
+      addToast({
+        title: "Oops! There was a mistake",
+        description: "Double-check your details and try again.",
+        color: "danger",
+        timeout: 7000,
+      });
+      setIsSubmitting(false);
+    }
+  }, [callbackState]);
 
   return (
     <Card
@@ -36,8 +64,9 @@ const SignupForm = () => {
       <CardBody className="px-4">
         <Form
           className="flex flex-col gap-2"
+          validationErrors={callbackState}
           action={formAction}
-          validationErrors={formState}
+          onSubmit={() => setIsSubmitting(true)}
         >
           <Input
             required
@@ -82,11 +111,7 @@ const SignupForm = () => {
                 onPress={() => setShowPassword(!showPassword)}
               >
                 <Icon
-                  icon={
-                    showPassword
-                      ? "heroicons:eye-slash-20-solid"
-                      : "heroicons:eye-20-solid"
-                  }
+                  icon={showPasswordIcon}
                   className="w-5 h-5 text-[#a0a0a0] group-hover/wrapper:text-[#777777]"
                 />
               </Button>

@@ -7,5 +7,14 @@ export const createUser = async (data: {
   email: string;
   password: string;
 }) => {
-  return await prisma.user.create({ data });
+  try {
+    await prisma.user.create({ data });
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+    };
+  }
 };

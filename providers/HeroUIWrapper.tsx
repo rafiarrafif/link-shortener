@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/navigation";
 
@@ -17,6 +17,7 @@ const HeroUIWrapper = ({
 
   return (
     <HeroUIProvider navigate={router.push}>
+      <ToastProvider />
       {mounted ? (
         <NextThemesProvider attribute={"class"} defaultTheme="light">
           <main>{children}</main>

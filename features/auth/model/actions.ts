@@ -38,18 +38,20 @@ export const registerUser = async (
     10
   );
 
-  try {
-    await createUser({
-      name: validationResult.data?.name!,
-      email: validationResult.data?.email!,
-      password: hashedPassword,
-    });
+  const storeUserData = await createUser({
+    name: validationResult.data?.name!,
+    email: validationResult.data?.email!,
+    password: hashedPassword,
+  });
 
+  if (storeUserData.success) {
     return {
       success: true,
       message: "User created successfully",
     };
-  } catch (error) {
-    return error;
+  } else {
+    return {
+      email: ["Email already registered"],
+    };
   }
 };
