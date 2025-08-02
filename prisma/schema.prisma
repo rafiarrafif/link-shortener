@@ -15,7 +15,7 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
+  id          String    @id @default(uuid()) @db.Uuid
   email       String    @unique
   avatar      String?   @db.Text
   name        String    @db.VarChar(255)
@@ -24,4 +24,61 @@ model User {
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
+
+  generatedLinks Link[] @relation("GeneratedLinks")
+
+  @@map("users")
+}
+
+model Link {
+  id          String    @id @default(uuid()) @db.Uuid
+  shortUrl    String    @db.VarChar(255)
+  longUrl     String    @db.Text
+  description String    @db.Text
+  ownerId     String
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  owner       User      @relation("GeneratedLinks", fields: [ownerId], references: [id])
+
+  visitorLink VisitedLinkAssignment[]
+  @@map("links")
+}
+
+model Visitor {
+  id              String    @id @default(uuid()) @db.Uuid
+  fingerprint     String    @db.VarChar(255)
+  ipv4            String
+  countryCode     String?   @db.Char(2)
+  country         String?   @db.VarChar(100)
+  region          String?   @db.VarChar(100)
+  city            String?   @db.VarChar(50)
+  zip             String?   @db.VarChar(20)
+  latitude        Float?    @db.DoublePrecision
+  longitude       Float?    @db.DoublePrecision
+  timezone        String?   @db.VarChar(50)
+  isp             String?   @db.VarChar(180)
+  osVersion       String    @db.VarChar(50)
+  browserVersion  String    @db.VarChar(100)
+  deviceType      String    @db.VarChar(50)
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+
+  visitedLink     VisitedLinkAssignment[]
+  @@map("visitors")
+}
+
+model VisitedLinkAssignment {
+  id              String    @id @default(uuid()) @db.Uuid
+
+  visitor         Visitor   @relation(fields: [visitorId], references: [id])
+  visitorId       String
+
+  link            Link      @relation(fields: [linkId], references: [id])
+  linkId          String
+
+  assignmentAt    DateTime  @default(now())
+  @@map("visited_link_assignments")
 }
