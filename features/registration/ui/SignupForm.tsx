@@ -130,7 +130,10 @@ const SignupForm = () => {
       <CardFooter className="flex justify-center -mt-1 mb-3">
         <span className="text-sm">
           Already have an account?&nbsp;
-          <Link className="text-sm cursor-pointer font-medium" href="/login">
+          <Link
+            className="text-sm cursor-pointer font-medium"
+            href="/dashboard/login"
+          >
             Log in
           </Link>
         </span>

@@ -114,7 +114,10 @@ const LoginForm = () => {
       <CardFooter className="flex justify-center -mt-1 mb-3">
         <span className="text-sm">
           Don't have an account?&nbsp;
-          <Link className="text-sm cursor-pointer font-medium" href="/signup">
+          <Link
+            className="text-sm cursor-pointer font-medium"
+            href="/dashboard/signup"
+          >
             Sign up
           </Link>
         </span>
