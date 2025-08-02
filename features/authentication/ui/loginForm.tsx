@@ -1,5 +1,10 @@
 "use client";
 
+import React, { useActionState, useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import { ValidationError } from "next/dist/compiled/amphtml-validator";
+import { authLogin } from "../model/actions";
+import { useRouter } from "next/navigation";
 import {
   addToast,
   Button,
@@ -11,10 +16,6 @@ import {
   Input,
   Link,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
-import { ValidationError } from "next/dist/compiled/amphtml-validator";
-import React, { useActionState, useEffect, useState } from "react";
-import { authLogin } from "../model/actions";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +31,8 @@ const LoginForm = () => {
     initialFormState
   );
 
+  const router = useRouter();
+
   useEffect(() => {
     if (callbackState.success) {
       addToast({
@@ -38,6 +41,7 @@ const LoginForm = () => {
         color: "success",
         timeout: 5000,
       });
+      router.push("/dashboard");
     } else if (callbackState.success === false) {
       addToast({
         title: callbackState.message.title,

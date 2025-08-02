@@ -5,7 +5,9 @@ import { loginSchema } from "./validatiors";
 import { ZodTreeifyError } from "@/shared/types/zod/TreeifyError.types";
 import { treeifyError } from "zod";
 import { findUserByEmail } from "@/entities/user/model/repository";
+import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,6 +73,15 @@ export const authLogin = async (prevData: PreviewData, formData: FormData) => {
     storedPassword!
   );
   if (matchingResult) {
+    const token = jwt.sign(storedUserData, process.env.JWT_KEY!);
+    (await cookies()).set("auth_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 Days
+    });
+
     return {
       success: true,
       message: {

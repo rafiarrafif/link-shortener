@@ -2,10 +2,10 @@
 
 import { createUser } from "@/entities/user/model/repository";
 import { signupSchema } from "./validators";
-import bcrypt from "bcrypt";
 import { PreviewData } from "next";
 import { treeifyError } from "zod";
 import { ZodTreeifyError } from "@/shared/types/zod/TreeifyError.types";
+import bcrypt from "bcrypt";
 
 export const registerUser = async (
   prevData: PreviewData,
