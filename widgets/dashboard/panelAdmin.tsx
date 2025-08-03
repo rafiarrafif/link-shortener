@@ -1,9 +1,17 @@
+import { findUserById } from "@/entities/user/model/repository";
 import DashboardGreetings from "./components/Greetings";
+import DashboardControlLinks from "./components/DashboardControlLinks";
 
-export const PanelAdmin = async () => {
+type Props = {
+  jwtPayload: any;
+};
+
+export const PanelAdmin = async ({ jwtPayload }: Props) => {
+  const userData = await findUserById(jwtPayload.data.id!);
   return (
     <div>
-      <DashboardGreetings />
+      <DashboardGreetings name={userData?.name} />
+      <DashboardControlLinks links={userData?.generatedLinks} />
     </div>
   );
 };

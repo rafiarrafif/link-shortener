@@ -45,3 +45,21 @@ export const findUserByEmail = async (email: string) => {
     };
   }
 };
+
+export const findUserById = async (id: string) => {
+  return await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      name: true,
+      generatedLinks: {
+        select: {
+          id: true,
+          shortUrl: true,
+          longUrl: true,
+        },
+      },
+    },
+  });
+};

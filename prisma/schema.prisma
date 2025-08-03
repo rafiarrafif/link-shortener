@@ -34,7 +34,7 @@ model Link {
   id          String    @id @default(uuid()) @db.Uuid
   shortUrl    String    @db.VarChar(255) @unique
   longUrl     String    @db.Text
-  description String    @db.Text
+  description String?   @db.Text
   ownerId     String    @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())

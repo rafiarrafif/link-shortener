@@ -22,3 +22,29 @@ export const getLinkByShortlink = async (shortUrl: string) => {
     ...linkData,
   };
 };
+
+type InputPayload = {
+  shortlink: string;
+  longlink: string;
+  userId: string;
+};
+export const createLink = async (payload: InputPayload) => {
+  try {
+    const createdLink = await prisma.link.create({
+      data: {
+        shortUrl: payload.shortlink,
+        longUrl: payload.longlink,
+        ownerId: payload.userId,
+      },
+    });
+    return {
+      success: true,
+      data: createdLink,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Shortlink has been taken",
+    };
+  }
+};
