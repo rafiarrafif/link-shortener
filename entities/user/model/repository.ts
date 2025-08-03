@@ -54,6 +54,9 @@ export const findUserById = async (id: string) => {
     select: {
       name: true,
       generatedLinks: {
+        where: {
+          deletedAt: null,
+        },
         select: {
           id: true,
           shortUrl: true,

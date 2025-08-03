@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@/shared/db/prisma";
 
 export const getLinkByShortlink = async (shortUrl: string) => {
@@ -45,6 +46,28 @@ export const createLink = async (payload: InputPayload) => {
     return {
       success: false,
       message: "Shortlink has been taken",
+    };
+  }
+};
+
+export const deleteLink = async (id: string) => {
+  try {
+    const deletedLink = await prisma.link.update({
+      where: {
+        id,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+    return {
+      success: true,
+      data: deletedLink,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to delete",
     };
   }
 };

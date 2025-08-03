@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteLink } from "@/entities/link/model/repository";
 import { createLinkAction } from "@/features/links/model/actions";
 import {
   addToast,
@@ -48,6 +49,20 @@ const DashboardControlLinks = ({ links }: Props) => {
       router.push(`/dashboard`);
     }
   }, [callbackCreateState]);
+
+  const deleteLinkHandle = async (id: string) => {
+    const response = await deleteLink(id);
+    if (response.success) {
+      router.refresh();
+    } else {
+      addToast({
+        title: "Ooopss..",
+        description: "Failed to remove link",
+        color: "danger",
+        timeout: 5000,
+      });
+    }
+  };
 
   return (
     <div className="mt-12 px-20">
@@ -123,7 +138,11 @@ const DashboardControlLinks = ({ links }: Props) => {
                   <p className="text-sm text-neutral-500">{item.longUrl}</p>
                 </div>
                 <div>
-                  <Button isIconOnly color="danger">
+                  <Button
+                    isIconOnly
+                    color="danger"
+                    onPress={() => deleteLinkHandle(item.id)}
+                  >
                     <Icon
                       icon="heroicons:trash-20-solid"
                       className="w-auto h-5"
