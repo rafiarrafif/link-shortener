@@ -17,7 +17,13 @@ const NavbarAvatarDropdown = () => {
         <Avatar
           isBordered
           radius="md"
-          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          src=""
+          fallback={
+            <Icon
+              icon="heroicons:user-16-solid"
+              className="h-auto w-6 text-neutral-400"
+            />
+          }
         />
       </DropdownTrigger>
       <DropdownMenu variant="flat">

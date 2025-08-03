@@ -1,12 +1,12 @@
-import React from "react";
+import { getLinkByShortlink } from "@/entities/link/model/repository";
+import { notFound, redirect } from "next/navigation";
 
 const page = async ({ params }: { params: { slug: string[] } }) => {
-  const { slug } = await params;
-  return (
-    <div>
-      <h1>Please wait... {slug}</h1>
-    </div>
-  );
+  const result: any = await getLinkByShortlink(params.slug[0]);
+  if (!result.success) {
+    return notFound();
+  }
+  redirect(result.longUrl);
 };
 
 export default page;
