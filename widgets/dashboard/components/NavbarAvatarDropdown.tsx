@@ -43,6 +43,7 @@ const NavbarAvatarDropdown = () => {
           key="logout"
           className="text-danger font-[Geist]"
           color="danger"
+          href="/dashboard/logout"
           startContent={
             <Icon
               icon="heroicons:arrow-right-start-on-rectangle-20-solid"
