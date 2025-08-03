@@ -5,7 +5,7 @@ const adminPrefix = process.env.ADMIN_PREFIX;
 export const checkRouteMiddleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith(`/${adminPrefix}`)) {
+  if (pathname.startsWith(`/${adminPrefix}`) || pathname === "/") {
     return NextResponse.next();
   }
 
