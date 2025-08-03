@@ -5,6 +5,7 @@ export const getLinkByShortlink = async (shortUrl: string) => {
   const linkData = await prisma.link.findUnique({
     where: {
       shortUrl,
+      deletedAt: null,
     },
     select: {
       longUrl: true,
