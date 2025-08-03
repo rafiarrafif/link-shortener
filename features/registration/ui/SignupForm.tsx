@@ -40,7 +40,7 @@ const SignupForm = () => {
         color: "success",
         timeout: 5000,
       });
-      router.push("/login");
+      router.push(`/dashboard/login`);
     } else if (callbackState.error === true) {
       addToast({
         title: "Oops! There was a mistake",

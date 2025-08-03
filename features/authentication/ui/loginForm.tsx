@@ -41,7 +41,7 @@ const LoginForm = () => {
         color: "success",
         timeout: 5000,
       });
-      router.push("/dashboard");
+      router.push(`/dashboard`);
     } else if (callbackState.success === false) {
       addToast({
         title: callbackState.message.title,
@@ -72,7 +72,7 @@ const LoginForm = () => {
           <Input
             label="Email"
             name="email"
-            // type="email"
+            type="email"
             variant="bordered"
             classNames={{
               input: "focus:outline-none text-md",
@@ -116,7 +116,7 @@ const LoginForm = () => {
           Don't have an account?&nbsp;
           <Link
             className="text-sm cursor-pointer font-medium"
-            href="/dashboard/signup"
+            href={`/dashboard/signup`}
           >
             Sign up
           </Link>

@@ -1,6 +1,6 @@
 import { createNEMO } from "@rescale/nemo";
-import { authMiddleware } from "./lib/middlewares/auth";
 import { checkRouteMiddleware } from "./lib/middlewares/checkRoute.global";
+import { authenticatedMiddleware } from "./lib/middlewares/authenticated";
 
 const adminPrefix = "/" + process.env.ADMIN_PREFIX || "/dashboard";
 
@@ -9,7 +9,7 @@ const globalMiddlewares = {
 };
 
 const middlewares = {
-  // [adminPrefix]: authMiddleware,
+  [adminPrefix]: authenticatedMiddleware,
 };
 
 export const middleware = createNEMO(middlewares, globalMiddlewares);
